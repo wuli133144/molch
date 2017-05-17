@@ -9,7 +9,8 @@ add_library(molch
 	packet
 	header
 	header-and-message-keystore
-	ratchet user-store
+	ratchet
+	user-store
 	spiced-random
 	molch
 	conversation

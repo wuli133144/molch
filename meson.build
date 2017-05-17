@@ -63,3 +63,5 @@ endif
 #add_project_link_arguments(flag, language: 'c')
 
 math = compiler.find_library('m', required: false)
+
+subdir('lib')

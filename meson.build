@@ -66,3 +66,4 @@ math = compiler.find_library('m', required: false)
 
 subdir('lib')
 subdir('test')
+subdir('bindings')

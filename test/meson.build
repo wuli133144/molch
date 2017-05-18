@@ -34,6 +34,23 @@ test_utils = library('test-utils', ['utils.c'], include_directories: protobuf_in
 test_common = library('test_common', ['common.c'], include_directories: protobuf_include, link_with: [molch, test_utils], dependencies: libsodium)
 packet_test_lib = library('packet-test-lib', 'packet-test-lib.c', link_with: [test_utils, test_common])
 
+valgrind_enabled = get_option('enable_valgrind')
+if valgrind_enabled
+	valgrind = find_program('valgrind')
+	valgrind_arguments = [
+		'--trace-children=yes',
+		'--leak-check=full',
+		'--error-exitcode=10'
+	]
+
+	# check if protoc-c works with valgrind (weird error on ARMv7 with ArchlinuxARM)
+	valgrind_protoc_command = run_command(valgrind, valgrind_arguments + [protoc_c.path()])
+	if valgrind_protoc_command.returncode() != '10'
+		add_test_setup('valgrind', exe_wrapper: [valgrind.path()] + valgrind_arguments)
+	else
+		message('WARNING: Valgrind was disabled because of problems with the system')
+	endif
+endif
 
 foreach test : test_files
 	test_executable = executable(test, test + '.c', link_with: packet_test_lib, include_directories: protobuf_include, dependencies: [libsodium, protobuf_c])

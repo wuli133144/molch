@@ -1,1 +1,2 @@
-option('enable_valgrind', type: 'boolean', value: true)
+option('enable_valgrind', type: 'boolean', value: false)
+option('enable_bindings', type: 'boolean', value: false)

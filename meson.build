@@ -2,7 +2,6 @@ project('molch', 'c', default_options: [
 	'c_std=c99',
 	'buildtype=release',
 	'werror=true',
-	'b_lto=true',
 	'b_pch=true'
 	])
 version = '0.1.0'

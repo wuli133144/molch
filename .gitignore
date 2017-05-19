@@ -1,5 +1,6 @@
 build/
 static-analysis/
+scan-build
 .idea/
 *.orig
 address-sanitizer

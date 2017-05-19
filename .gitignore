@@ -1,4 +1,5 @@
 build/
+mesonbuild
 static-analysis/
 scan-build
 .idea/

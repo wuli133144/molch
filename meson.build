@@ -1,4 +1,10 @@
-project('molch', 'c', default_options: ['c_std=c99'])
+project('molch', 'c', default_options: [
+	'c_std=c99',
+	'buildtype=release',
+	'werror=true',
+	'b_lto=true',
+	'b_pch=true'
+	])
 version = '0.1.0'
 soversion = '0'
 
@@ -11,7 +17,6 @@ if (compiler.get_id() == 'clang') or (compiler.get_id() == 'gcc')
 		'-pedantic',
 		'-Wall',
 		'-Wextra',
-		'-Werror',
 		'-Wstrict-prototypes',
 		'-Wwrite-strings',
 		'-Wshadow',

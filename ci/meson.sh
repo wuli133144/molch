@@ -1,5 +1,5 @@
 #!/bin/bash
-[ ! -e mesonbuild ] && mkdir build
+[ ! -e mesonbuild ] && mkdir mesonbuild
 cd mesonbuild || exit 1
 
 rm -r -- *

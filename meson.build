@@ -39,6 +39,77 @@ if (compiler.get_id() == 'clang') or (compiler.get_id() == 'gcc')
 			'-D_FORTIFY_SOURCE=2'
 		]
 	endif
+
+	if get_option('enable_asan') or get_option('enable_ubsan')
+		if get_option('enable_valgrind') or get_option('enable_bindings')
+			error('Can\'t enable sanitizers and valgrind or lua bindings at the same time')
+		endif
+
+		optimized_build_options = [
+			'release',
+			'debugoptimized'
+		]
+		if not optimized_build_options.contains(get_option('buildtype'))
+			error('Buildtype needs to be one of debugoptimized or release')
+		endif
+
+		compiler_flags += [
+			# sanitizer options
+			'-fno-sanitize-recover=all',
+			# optimize build
+			'-fno-omit-frame-pointer',
+			'-fno-common',
+			'-fno-optimize-sibling-calls'
+		]
+
+		sanitizer_environment = environment()
+
+		if get_option('enable_asan')
+			asan = compiler.find_library('asan')
+			add_project_link_arguments('-lasan', language: 'c')
+
+			compiler_flags += [
+				'-fsanitize=address',
+			]
+
+			sanitizer_environment.append('ASAN_OPTIONS', 'detect_stack_use_after_return=1', separator: ':')
+			sanitizer_environment.append('ASAN_OPTIONS', 'check_initialization_order=1', separator: ':')
+		endif
+
+		if get_option('enable_ubsan')
+			ubsan = compiler.find_library('ubsan')
+			add_project_link_arguments('-lubsan', language: 'c')
+
+			compiler_flags += [
+				'-fsanitize=undefined',
+				'-fsanitize=integer',
+				'-fsanitize=shift',
+				'-fsanitize=integer-divide-by-zero',
+				'-fsanitize=unreachable',
+				'-fsanitize=vla-bound',
+				'-fsanitize=null',
+				'-fsanitize=signed-integer-overflow',
+				'-fsanitize=bounds',
+				'-fsanitize=bounds-strict',
+				'-fsanitize=alignment',
+				'-fsanitize=object-size',
+				'-fsanitize=float-divide-by-zero',
+				'-fsanitize=float-cast-overflow',
+				'-fsanitize=nonnull-attribute',
+				'-fsanitize=returns-nonnull-attribute',
+				'-fsanitize-address-use-after-scope',
+				'-fsanitize=bool',
+				'-fsanitize=enum',
+				'-fsanitize=nullability-arg',
+				'-fsanitize=nullability-return',
+				'-fsanitize=unsigned-integer-overflow'
+			]
+
+			sanitizer_environment.append('UBSAN_OPTIONS', 'print_stacktrace=1', separator: ':')
+		endif
+
+		add_test_setup('sanitize', env: sanitizer_environment)
+	endif
 endif
 
 foreach flag : compiler_flags

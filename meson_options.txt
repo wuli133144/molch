@@ -1,2 +1,4 @@
 option('enable_valgrind', type: 'boolean', value: false)
 option('enable_bindings', type: 'boolean', value: false)
+option('enable_asan', type: 'boolean', value: false)
+option('enable_ubsan', type: 'boolean', value: false)

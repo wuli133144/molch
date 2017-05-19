@@ -27,4 +27,15 @@ foreach protobuf_file : protobuf_files
 	)
 endforeach
 
-protobufs_lib = library('protobufs', protobufs, dependencies: protobuf_c, override_options: 'werror=false')
+protobuf_flag_recommendations = [
+	'-Wno-cast-align'
+]
+
+protobuf_flags = []
+foreach flag : protobuf_flag_recommendations
+	if compiler.has_argument(flag)
+		protobuf_flags += flag
+	endif
+endforeach
+
+protobufs_lib = library('protobufs', protobufs, dependencies: protobuf_c, override_options: 'werror=false', c_args: protobuf_flags)

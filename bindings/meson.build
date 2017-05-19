@@ -5,8 +5,10 @@ if get_option('enable_bindings')
 	swig = find_program('swig', required: false)
 
 	swig_flag_recommendations = [
-		'-Wno-error',
-		'-Wno-conversion'
+		'-Wno-conversion',
+		'-Wno-unused-macros',
+		'-Wno-cast-qual',
+		'-Wno-missing-prototypes'
 	]
 	swig_flags = []
 	foreach flag : swig_flag_recommendations
@@ -28,7 +30,7 @@ if get_option('enable_bindings')
 
 	liblua = dependency('lua', version: '>=5.2')
 	root_include = include_directories('../')
-	molch_interface = library('molch-interface', swig_molch_wrapper, c_args: swig_flags, include_directories: root_include, link_with: molch, dependencies: [liblua, libsodium], name_prefix: '')
+	molch_interface = library('molch-interface', swig_molch_wrapper, c_args: swig_flags, include_directories: root_include, link_with: molch, dependencies: [liblua, libsodium], name_prefix: '', override_options: ['werror=false'])
 
 	#install molch.lua
 	empty_data = configuration_data()

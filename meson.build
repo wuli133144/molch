@@ -112,6 +112,14 @@ if (compiler.get_id() == 'clang') or (compiler.get_id() == 'gcc')
 	endif
 endif
 
+if get_option('enable_docs')
+	doxygen = find_program('doxygen', required: false)
+	dot = find_program('dot', required: false)
+	if doxygen.found() and dot.found()
+		run_target('doxygen', command: [doxygen, join_paths(meson.source_root(), 'Doxyfile')], build_by_default: true)
+	endif
+endif
+
 foreach flag : compiler_flags
 	if compiler.has_argument(flag)
 		add_project_arguments(flag, language: 'c')

@@ -9,6 +9,7 @@ undefined-behavior-sanitizer
 sanitizers
 *.swp
 dummy
+valgrind
 molch.config
 molch.files
 molch.includes

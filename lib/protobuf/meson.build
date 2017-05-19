@@ -27,4 +27,4 @@ foreach protobuf_file : protobuf_files
 	)
 endforeach
 
-protobufs_lib = library('protobufs', protobufs, dependencies: protobuf_c)
+protobufs_lib = library('protobufs', protobufs, dependencies: protobuf_c, override_options: 'werror=false')

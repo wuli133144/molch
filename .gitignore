@@ -4,6 +4,7 @@ static-analysis/
 *.orig
 address-sanitizer
 undefined-behavior-sanitizer
+sanitizers
 *.swp
 dummy
 molch.config

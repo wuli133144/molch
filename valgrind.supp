@@ -1,0 +1,6 @@
+{
+	ignore_lua_leaks
+	Memcheck:Leak
+	...
+	obj:*/*lua*
+}
